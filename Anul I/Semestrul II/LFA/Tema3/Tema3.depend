@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1495909330 source:/home/ana/Documents/UniBuc/Semestrul II/LFA/Tema3/main.cpp
+	<cstdio>
+	<string.h>
+	<ctype.h>
+

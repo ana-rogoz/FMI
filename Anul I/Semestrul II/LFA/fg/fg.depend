@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1490621397 source:/home/ana/Documents/UniBuc/Semestrul II/LFA/fg/main.cpp
+	<iostream>
+	<string>
+	<stdio.h>
+

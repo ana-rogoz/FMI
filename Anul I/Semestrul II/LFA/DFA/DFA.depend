@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1490614485 source:/home/ana/Documents/UniBuc/Semestrul II/LFA/DFA/main.cpp
+	<cstdio>
+	<vector>
+

@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1492961460 source:/home/ana/Documents/UniBuc/Semestrul II/OOP/Tema 2/main.cpp
+	<fstream>
+	<stdarg.h>
+	<iostream>
+	<math.h>
+

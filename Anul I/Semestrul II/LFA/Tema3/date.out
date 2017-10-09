@@ -1,0 +1,66 @@
+In urma pasului 1: 
+S - F | c | aceF | acDeF | Bc | aBceF | aBcDeF | 
+B - b | 
+D - d | 
+G - f | g | 
+F - G | 
+
+In urma pasului 2: 
+S - c | f | g | acef | aceg | acfef | acfeg | bc | abcef | abceg | abcfef | abcfeg | 
+
+In urma pasului 3: 
+Xc - c
+Xf - f
+Xg - g
+Xa - a
+Xe - e
+Xb - b
+
+In urma pasului 4:
+S - c
+
+S - f
+
+S - g
+
+S - XaY1
+Y1 - XcY2
+Y2 - XeXf
+
+S - XaY3
+Y3 - XcY4
+Y4 - XeXg
+
+S - XaY5
+Y5 - XcY6
+Y6 - XfY7
+Y7 - XeXf
+
+S - XaY8
+Y8 - XcY9
+Y9 - XfY10
+Y10 - XeXg
+
+S - XbXc
+
+S - XaY11
+Y11 - XbY12
+Y12 - XcY13
+Y13 - XeXf
+
+S - XaY14
+Y14 - XbY15
+Y15 - XcY16
+Y16 - XeXg
+
+S - XaY17
+Y17 - XbY18
+Y18 - XcY19
+Y19 - XfY20
+Y20 - XeXf
+
+S - XaY21
+Y21 - XbY22
+Y22 - XcY23
+Y23 - XfY24
+Y24 - XeXg

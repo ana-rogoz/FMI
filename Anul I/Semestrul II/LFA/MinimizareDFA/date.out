@@ -1,0 +1,29 @@
+adaug in lista lui 3-1 muchia 1-0
+adaug in lista lui 2-3 muchia 1-0
+adaug in lista lui 3-1 muchia 2-0
+adaug in lista lui 2-3 muchia 2-0
+marchez 3-0 
+adaug in lista lui 5-3 muchia 3-0
+marchez 3-1 1-0 2-0 
+adaug in lista lui 5-2 muchia 3-1
+marchez 3-2 1-0 2-0 
+adaug in lista lui 5-2 muchia 3-2
+marchez 4-0 
+adaug in lista lui 5-3 muchia 4-0
+marchez 4-1 
+adaug in lista lui 5-2 muchia 4-1
+marchez 4-2 
+adaug in lista lui 5-2 muchia 4-2
+marchez 5-0 
+marchez 5-0 
+marchez 5-1 
+marchez 5-2 3-1 3-2 4-1 4-2 
+marchez 5-3 3-0 4-0 
+marchez 5-4 
+0111111
+1001111
+1001111
+1110011
+1110011
+1111101
+1111110

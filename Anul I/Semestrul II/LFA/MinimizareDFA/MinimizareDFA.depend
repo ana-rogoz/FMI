@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1493307619 source:/home/ana/Documents/UniBuc/Semestrul II/LFA/MinimizareDFA/main.cpp
+	<cstdio>
+	<vector>
+	<algorithm>
+
