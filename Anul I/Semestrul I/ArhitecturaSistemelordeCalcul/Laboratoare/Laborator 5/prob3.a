@@ -1,0 +1,46 @@
+.data 
+
+	cifra: .word 0
+	numar: .word 0
+
+	da: .asciiz "Cifra apare in numarul dat"
+	nu: .asciiz "Cifra nu apare in numarul dat"
+
+.text
+
+	main:
+
+	li $v0, 5
+	syscall
+	sw $v0, numar
+
+	li $v0, 5
+	syscall 
+	sw $v0, cifra
+
+	lw $t0, numar
+	lw $t1, cifra
+	li $t2, 10
+
+	while:
+		rem $t3, $t0, $t2
+		div $t0, $t0, $t2
+		beq $t3, $t1, Da
+		beqz $t0, Nu
+		b while 
+
+	Da: 
+		la $a0, da
+		li $v0, 4
+		syscall
+
+	li $v0, 10
+	syscall
+
+	Nu:
+
+		la $a0, nu
+		li $v0, 4
+		syscall
+	li $v0, 10
+	syscall

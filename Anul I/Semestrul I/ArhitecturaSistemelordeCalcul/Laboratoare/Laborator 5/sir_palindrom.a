@@ -1,0 +1,40 @@
+.data 
+	x: .word 1234
+	da: .asciiz "E palindrom"
+	nu: .asciiz "Nu e palindrom"
+
+.text 
+	main:
+
+		lw $t0, x
+		li $t1, 10
+		Push: 
+			rem $t2, $t0, $t1
+			div $t0, $t0, $t1
+			subu $sp, $sp, 4
+			sw $t2, 0($sp)
+			bnez $t0, Push
+
+		lw $t0, x
+		Pop:
+			rem $t2, $t0, $t1
+			div $t0, $t0, $t1
+			lw $t3, 0($sp)
+			addu $sp, $sp, 4
+			bne $t2, $t3, Nu
+			bnez $t0, Pop
+
+		la $a0, da #afiseaza "este palindrom"
+		li $v0, 4
+		syscall
+
+		li $v0, 10
+		syscall
+
+		Nu:
+		la $a0, nu
+		li $v0, 4
+		syscall
+
+		li $v0, 10
+		syscall

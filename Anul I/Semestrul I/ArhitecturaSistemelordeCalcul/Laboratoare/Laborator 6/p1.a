@@ -1,0 +1,74 @@
+
+  li $a0, 20
+  move $s0, $a0
+  li $s1, 2
+  li $s2, 20
+nthp: beq $s0, $0, done1   
+  move $a0, $s1
+  move $a2, $s2
+  jal prime     
+    beq $v0, $0, notp   
+  sw $s1, 0($s2)
+  addi $s2, $s2, 4
+  addi $s0, $s0, -1   
+notp: addi $s1, $s1, 1   
+  b nthp      
+done1: 
+addi $v0, $s1, -1
+  li $v0, 10
+  syscall
+  
+prime:  addi $sp, $sp, -16   
+  sw $ra, 0($sp)
+  sw $a0, 4($sp)
+  sw $s0, 8($sp)
+  sw $s1, 12($sp)
+  li $s0, 20     
+loop: beq $s0, $a2, done   
+  lw $a1, 0($s0)    
+  jal div1      
+  beq $v1, $0, nprime   
+  addi $s0, $s0, 4   
+  b loop      
+done: li $v0, 1
+  lw $ra, 0($sp)
+  lw $a0, 4($sp)
+  lw $s0, 8($sp)
+  lw $s1, 12($sp)
+  addi $sp, $sp, 16   
+  jr $ra
+nprime: li $v0, 0
+  lw $ra, 0($sp)
+  lw $a0, 4($sp)
+  lw $s0, 8($sp)
+  lw $s1, 12($sp)
+  addi $sp, $sp, 16   
+  jr $ra
+
+div1: addi $sp, $sp, -12   
+  sw $ra, 0($sp)
+  sw $a0, 4($sp)
+  sw $a1, 8($sp)
+  li $t1, 0             
+  move $t2, $a0         
+  move $t3, $a1        
+loop1: bltu $t2, $a1, skip1  
+  sll $a1, $a1, 1       
+  b loop1               
+skip1: nop                 
+loop2: beq $a1, $t3, skip2   
+  sll $t1, $t1, 1       
+  sra $a1, $a1, 1       
+  bltu $t2, $a1, skif1  
+    addi $t1, $t1, 1      
+  sub $t2, $t2, $a1     
+  skif1:  nop                   
+  b loop2               
+skip2:  nop
+  move $v0, $t1
+  move $v1, $t2
+  lw $ra, 0($sp)     
+  lw $a0, 4($sp)     
+    lw $a1, 8($sp)     
+  addi $sp, $sp, 12    
+  jr $ra

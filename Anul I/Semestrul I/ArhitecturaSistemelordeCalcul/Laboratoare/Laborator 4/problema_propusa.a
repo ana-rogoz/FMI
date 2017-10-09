@@ -1,0 +1,155 @@
+.data 
+	optiune1: .asciiz "1. Suma elementelor"
+	optiune2: .asciiz "2. Ultimul element"
+	optiune3: .asciiz "3. Elementele mai mari ca n"
+	optiune4: .asciiz "4. Iesire din program"
+
+	n: .word 0
+	vector: .space 64
+	opt: .word 0
+.text
+
+
+	afisareOptiuni:
+
+		li $v0, 4
+		la $a0, optiune1
+		syscall
+
+		la $a0, optiune2
+		li $v0, 4
+		syscall
+
+		la $a0, optiune3
+		li $v0, 4
+		syscall
+
+		la $a0, optiune4
+		li $v0, 4
+		syscall 
+
+	jr $ra
+
+	Varianta1:
+
+		la $t2, vector
+		li $t1, 0
+		li $t3, 0
+		forSuma:
+
+			add $t3, $t3, $t2
+			addi $t2, 4
+			addi $t1, 1
+			beq $t1, $t0, endforSuma
+			b forSuma
+
+		endforSuma:
+		li $v0, 1
+		lw $a0, ($t3)
+		syscall
+		b back1
+
+
+	Varianta2:
+		
+		la $t2, vector
+		li $t1, 0
+		forafisare2: 
+
+			addi $t1, 1
+
+			beq $t1, $t0, endforafisare2
+			
+			addi $t2, 4
+			b forafisare2
+
+		endforafisare2: 
+		lw $a0, ($t2)
+		li $v0, 1
+		syscall
+		b back2
+
+
+	afisare3:
+		li $v0, 1
+		lw $a0, ($t2)
+		syscall
+
+		b eticheta4
+
+	Varianta3:
+
+		la $t2, vector
+		li $t1, 0
+		forafisare3:
+			addi $t1, 1
+			bgt $t2, $t0, afisare3	
+			eticheta4:
+			beq $t1, $t0, endforafisare3
+			addi $t2, 4
+
+			b forafisare3
+
+		endforafisare3:
+		b back3
+
+	main: 
+
+	li $v0, 5
+	syscall 
+	sw $v0, n
+	lw $t0, n
+
+	la $t2, vector
+	li $t1, 0
+	forcitire:
+		
+		li $v0, 5
+		syscall 
+		sw $v0, ($t2)
+
+		addi $t1, 1
+		addi $t2, 4
+		beq $t1, $t0, endforcitire
+		b forcitire
+
+	endforcitire:
+
+	la $t2, vector
+	li $t1, 0
+	forafisare: 
+			
+			lw $a0, ($t2)
+			li $v0, 1
+			syscall
+
+			addi $t1, 1
+			addi $t2, 4
+
+			beq $t1, $t0, endforafisare
+			b forafisare
+
+	endforafisare: 
+
+	jal afisareOptiuni
+
+	while:
+		li $v0, 5
+		syscall
+		sw $v0, opt
+		lw $t5, opt
+
+		beq $t5, 1, Varianta1
+		back1:
+		beq $t5, 2, Varianta2
+		back2:
+		beq $t5, 3, Varianta3
+		back3:
+		beq $t5, 4, endWhile
+
+		b while
+
+	endWhile: 
+
+	li $v0, 10
+	syscall 

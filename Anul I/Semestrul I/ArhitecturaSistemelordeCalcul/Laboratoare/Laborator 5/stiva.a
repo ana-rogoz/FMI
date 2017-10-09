@@ -1,0 +1,30 @@
+.data 
+	sir: .asciiz "acesta este un sir"
+	sir2: .space 100
+
+.text
+	main:
+
+		la $t0, sir
+		la $t1, sir2
+		li $t2, 0
+
+		Push:
+			lb $t3, 0($t0)
+			beqz $t3, Pop
+			addi $t2, 1
+			addi $t0, 1
+			subu $sp, $sp, 4
+			sw $t3, 0($sp)
+			b Push
+
+		Pop: 
+			lw $t3, 0($sp)
+			addi $sp, 4
+			sb $t3, 0($t1)
+			sub $t2, $t2, 1
+			addi $t1, 1
+			bnez $t2, Pop
+
+	li $v0, 10
+	syscall 

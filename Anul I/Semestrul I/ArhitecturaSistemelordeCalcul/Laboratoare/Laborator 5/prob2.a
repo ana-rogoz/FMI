@@ -1,0 +1,45 @@
+.data 
+
+	sir: .asciiz "aaabbcdddeeee"
+
+.text 
+
+	main:
+
+		li $t0, 1
+		li $t4, 1
+		la $t1, sir
+		lb $t2, ($t1)
+
+		while:
+
+			addi $t1, 1
+			lb $t3, ($t1)
+			beqz $t3, end
+			beq $t2, $t3, adun
+			caz1:
+			bne $t2, $t3, reset
+			caz2:
+			blt $t4, $t0, maxim
+			caz3:
+			move $t2, $t3
+
+			b while
+
+	adun:
+		addi $t0, 1
+		b caz1
+
+	reset: 
+		li $t0, 1
+		b caz2
+
+	maxim: 
+		move $t4, $t0
+		b caz3
+
+	end:
+
+	li $v0, 10
+	syscall
+

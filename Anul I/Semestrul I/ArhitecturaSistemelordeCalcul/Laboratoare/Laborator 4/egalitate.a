@@ -1,0 +1,21 @@
+.text 
+	main:
+
+		li $t0, 0
+		li $t7, 7
+		beq $t7, $t1, eticheta
+		beq $t7, $t2, eticheta
+		beq $t7, $t3, eticheta
+		beq $t7, $t4, eticheta
+		beq $t7, $t5, eticheta
+
+		li $v0,10
+
+		syscall
+
+		eticheta:
+			li $t0, 1
+
+		li $v0,10
+
+		syscall

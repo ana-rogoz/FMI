@@ -1,0 +1,75 @@
+-- $s0 = n
+-- $s1 = current number
+-- $s2 = last vector
+
+  li $a0, 20
+  move $s0, $a0
+  li $s1, 2
+  li $s2, 20
+nthp: beq $s0, $0, done1   -- while n /= 0
+  move $a0, $s1
+  move $a2, $s2
+  jal prime     -- vo = 1 => i is prime
+  beq $v0, $0, notp   -- if i is prime
+  sw $s1, 0($s2)
+  addi $s2, $s2, 4
+  subi $s0, $s0, 1   -- n := n - 1
+notp: addi $s1, $s1, 1   -- i := i + 1
+  b nthp      -- end
+done1: subi $v0, $s1, 1
+  halt
+  
+prime:  subi $sp, $sp, 16   -- stack stuff
+  sw $ra, 0($sp)
+  sw $a0, 4($sp)
+  sw $s0, 8($sp)
+  sw $s1, 12($sp)
+  li $s0, 20     -- i := v.start
+loop: beq $s0, $a2, done   -- while i \= v.end
+  lw $a1, 0($s0)    -- a1 := v [i]
+  jal div      -- get x div v[i] and x mod v[i]
+  beq $v1, $0, nprime   -- if x mod v[i] = 0, not prime
+  addi $s0, $s0, 4   -- i := i + 4;
+  b loop      -- END;
+done: li $v0, 1
+  lw $ra, 0($sp)
+  lw $a0, 4($sp)
+  lw $s0, 8($sp)
+  lw $s1, 12($sp)
+  addi $sp, $sp, 16   -- stack stuff
+  jr $ra
+nprime: li $v0, 0
+  lw $ra, 0($sp)
+  lw $a0, 4($sp)
+  lw $s0, 8($sp)
+  lw $s1, 12($sp)
+  addi $sp, $sp, 16   -- stack stuff
+  jr $ra
+
+div: subi $sp, $sp, 12   -- stack stuff
+  sw $ra, 0($sp)
+  sw $a0, 4($sp)
+  sw $a1, 8($sp)
+  li $t1, 0             -- q := 0
+  move $t2, $a0         -- r := x
+  move $t3, $a1        -- y0 := y
+loop1: bltu $t2, $a1, skip1  -- while r >= y
+  sll $a1, $a1, 1       -- y := y * 2
+  b loop1               -- end
+skip1: nop                 
+loop2: beq $a1, $t3, skip2   -- while y # y0
+  sll $t1, $t1, 1       -- q := q * 2
+  sra $a1, $a1, 1       -- y := y DIV 2
+  bltu $t2, $a1, skif1  -- if r >= y
+  addi $t1, $t1, 1      -- q := q + 1
+  sub $t2, $t2, $a1     -- r := r - y
+skif1:  nop                   -- end
+  b loop2               -- end
+skip2:  nop
+  move $v0, $t1
+  move $v1, $t2
+  lw $ra, 0($sp)     -- restore $ra from the stack
+  lw $a0, 4($sp)     -- restore $a0 from the stack
+  lw $a1, 8($sp)     -- restore $a0 from the stack
+  addi $sp, $sp, 12    -- free local space on stack
+  jr $ra

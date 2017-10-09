@@ -1,0 +1,24 @@
+.data 
+
+sir: .asciiz "Acesta este un sir de caractere."
+
+.text
+
+main:
+
+li $t0, 0
+la $t1, sir
+
+eticheta: 
+lb $t2, ($t1)
+beqz $t2, sfarsit
+addi $t0, 1
+addi $t1, 1
+
+b eticheta
+
+sfarsit:
+	
+li $v0,10
+
+syscall

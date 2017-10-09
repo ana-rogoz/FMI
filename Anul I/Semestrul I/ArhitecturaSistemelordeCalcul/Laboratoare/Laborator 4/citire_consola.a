@@ -1,0 +1,17 @@
+.data
+
+i1: .word 0 # definirea unei variabile i1
+
+.text
+
+main:
+
+li $v0, 5 # incarcarea codului apel sistem corespunzator
+
+syscall # apelul catre sistemul de operare
+
+sw $v0, i1 #valoarea de la tastatura e intoarsa in variabila i1
+
+li $v0,10
+
+syscall

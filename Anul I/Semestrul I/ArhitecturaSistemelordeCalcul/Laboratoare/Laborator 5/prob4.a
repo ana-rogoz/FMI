@@ -1,0 +1,70 @@
+.data 
+
+	n: .word 0
+	matrice: .space 64
+
+.text
+	
+	li $v0, 5
+	syscall 
+	sw $v0, n
+	lw $t0, n
+
+	li $t7, 1
+	la $t1, matrice
+
+	fori:
+
+		li $t8, 1
+		forj:
+			li $v0, 5
+			syscall
+			sw $v0, ($t1)
+			addi $t1, 4
+
+			beq $t8, $t0, eticheta2 
+
+			addi $t8, 1
+			b forj
+
+		eticheta2:
+		beq $t7, $t0, end1
+		addi $t7, 1
+
+		b fori
+
+
+	end1: 
+
+	li $t7, 1
+	la $t1, matrice
+
+	fori1: 
+
+		li $t8, 1
+		forj1:
+			beq $t7, $t8, afisare
+			eticheta1:
+			addi $t1, 4
+
+			beq $t8, $t0, eticheta3
+			addi $t8, 1
+			b forj1
+
+		eticheta3:
+		beq $t7, $t0, end2
+		addi $t7, 1
+		b fori1
+
+	afisare:
+
+	lw $a0, ($t1)
+	li $v0, 1
+	syscall
+	b eticheta1
+
+	 
+	end2:
+
+	li $v0, 10
+	syscall
