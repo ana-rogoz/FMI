@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1487875700 source:/home/ana/Documents/UniBuc/ASD/Laborator 8/hashcode/main.cpp
+	<fstream>
+	<vector>
+	<set>
+

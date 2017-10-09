@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1486296989 source:/home/ana/Documents/UniBuc/ASD/Laborator 8/test/main.c
+	<stdio.h>
+	<stdlib.h>
+
