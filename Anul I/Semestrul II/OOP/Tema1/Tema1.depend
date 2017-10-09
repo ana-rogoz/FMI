@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1489596570 source:/home/ana/Documents/UniBuc/Semestrul II/OOP/Tema1/main.cpp
+	<fstream>
+	<iostream>
+	<vector>
+	<queue>
+
