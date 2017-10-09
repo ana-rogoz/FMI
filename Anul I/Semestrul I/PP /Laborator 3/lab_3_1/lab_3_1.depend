@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1476942332 source:/home/ana/Documents/lab_3_1/main.cpp
+	<stdio.h>
+	"fisier.h"
+
+1476942837 /home/ana/Documents/lab_3_1/fisier.h
+
+1476944611 source:/home/ana/Documents/lab_3_1/main.c
+	<stdio.h>
+	"fisier.h"
+

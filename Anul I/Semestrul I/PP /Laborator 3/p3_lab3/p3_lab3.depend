@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1477330908 source:/home/ana/Documents/p3_lab3/main.c
+	<stdio.h>
+	<string.h>
+

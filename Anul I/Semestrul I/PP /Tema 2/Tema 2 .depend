@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1481139918 source:/home/ana/Documents/UniBuc/PP /Tema 2 /main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1481182777 source:/home/ana/Documents/UniBuc/PP /Tema 2 /AnaRogoz_tema2.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+

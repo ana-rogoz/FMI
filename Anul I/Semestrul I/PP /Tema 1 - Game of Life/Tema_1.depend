@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1477934196 source:/home/ana/Documents/Tema_1/main.c
+	<stdio.h>
+
+1478156671 source:/home/ana/Documents/Tema_1/tema1.c
+	<stdio.h>
+
+1478760678 source:/home/ana/Documents/PP /Tema 1 - Game of Life/tema1.c
+	<stdio.h>
+
