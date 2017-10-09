@@ -1,6 +1,6 @@
-ASC - Stefanescu Gheorghe \
-ASD - Ceterchi Rodica \
-PP - Alexe Bogdan
-Logica si Matematica Computationala - Leustean Leonard 
-Algebra - Vladoiu Marius
-Analiza - Ilias Petre
+ASC - Gheorghe Stefanescu \
+ASD - Rodica Ceterchi \
+PP - Bogdan Alexe  \
+Logica si Matematica Computationala - Laurentiu Leustean
+Algebra - Marius Vladoiu
+Analiza - Petre Ilias
