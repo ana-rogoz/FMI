@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1507467411 source:/home/ana/Documents/UniBuc/Anul II/Semestrul I/TAP/3sum/main.cpp
+	<cstdio>
+	<vector>
+	<algorithm>
+

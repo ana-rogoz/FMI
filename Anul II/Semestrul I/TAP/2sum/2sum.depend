@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1507467761 source:/home/ana/Documents/UniBuc/Anul II/Semestrul I/TAP/2sum/main.cpp
+	<cstdio>
+	<vector>
+	<algorithm>
+	<unordered_map>
+
