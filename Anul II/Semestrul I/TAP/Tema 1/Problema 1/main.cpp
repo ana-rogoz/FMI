@@ -48,13 +48,22 @@ int main() {
     }
   }
 
+  // Nu exista niciun segment care sa intersecteze 
+  // segmentul ce il vrem acoperit.
   if(v.size() == 0) {
     printf("-1\n");
     return 0;
   }
 
   sort(v.begin(), v.end(), sortare);
-
+  
+  // Verificam daca exista cel putin un segment
+  // care sa cuprinda capatul stang. 
+  if(v[0].stanga > a) {
+    printf("-1");  
+    return 0;
+  }
+  
   int num = 1;
   intervale top1, top2;
 
@@ -74,22 +83,19 @@ int main() {
             st.push(top1);
             st.push(v[i]);
             break;
-          }
-        }
-      }
+          } // else
+        } // while
+      } // if
       else {
-        if(v[i].stanga <= a) {
+        if(v[i].stanga <= a) 
           st.pop();
-          st.push(v[i]);
-        }
-        else
-          st.push(v[i]);
-      }
-    }
+        st.push(v[i]);
+      } // else
+    } // if 
 
     if(st.top().dreapta >= b)
       break;
-  }
+  } // for
 
   if(st.top().dreapta < b)
     printf("-1\n");
