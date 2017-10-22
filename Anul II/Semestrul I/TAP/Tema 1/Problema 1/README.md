@@ -1,6 +1,6 @@
 http://varena.ro/problema/acoperire
 
-Complexitate timp: O(nlogn) 
+Complexitate timp: O(nlogn) \
 Complexitate spatiu: O(n)
 
 Input:
@@ -14,6 +14,7 @@ xn yn - n segmente cu date de capetele stanga-dreapta
 Output:
 numarul_minim_de_segmente_pentru_acoperire (pe varena)
 segmentele necesare pentru a acoperi intregul interval a b, pe cate o linie
+
 
 Corectitudine:
 
