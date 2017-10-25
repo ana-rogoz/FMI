@@ -1,0 +1,53 @@
+Exemplu 1: 
+
+lungime 	timp		timp - lungime
+
+3		6		3
+5 		4 		-1 
+2		8 		6
+
+
+Sortare dupa timp:
+
+5 4 -> intarziere 1, se termina la 5
+3 6 -> intarziere 2, se termina la 8
+2 8 -> intarziere 2, se termina la 10
+
+
+Sortare dupa timp - lungime: 
+
+la fel
+
+
+
+
+
+
+Exemplu 2: (contraexemplu pentru c) )
+
+lungime 	timp		timp - lungime
+
+3		5		2
+1 		4 		3 
+7		8 		1
+
+
+Sortare dupa timp:
+
+1 4 -> intarziere 0, se termina la 1
+3 5 -> intarziere 0, se termina la 4
+7 8 -> intarziere 3, se termina la 11
+
+intarziere maxima 3 
+
+
+Sortare dupa timp - lungime: 
+
+7 8 -> intarziere 0, se termina la 7
+3 5 -> intarziere 5, se termina la 10
+1 4 -> intarziere 7, se termina la 11 
+
+intarziere maxima 7
+
+
+Exemplu de pe Moodle (contraexemplu pentru b) ) - sortare crescatoare dupa lungime 
