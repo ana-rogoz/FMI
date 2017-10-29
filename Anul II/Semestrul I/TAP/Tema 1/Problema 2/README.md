@@ -11,7 +11,7 @@ Principala idee a problemei este faptul ca tot ce conteaza este modul de sortare
 Astfel, o sortare ce reuseste sa obtina penalizarea minima este sortarea crescatoare dupa timpul limita al fiecarei activitati.
 La egalitatea timpului limita, nu se tine cont de lungimea activitatii intrucat, daca doua(mai multe) activitati au acelasi timp limita, durata in care cele doua(mai multe) se vor desfasura este aceeasi, indiferent de ordinea in care se executa, iar penalizarea de asemenea nu este influentata de ordine.
 
-Aceasta abordare reuseste sa obtina penalizarea minima, deoarece incearca ca pentru fiecare moment de timp sa obtina penalizarea minima.
+Aceasta abordare reuseste sa obtina penalizarea minima, deoarece (TBD)
 
 
 Subpunctul b) si subpunctul c) sunt tratate in fisierul cu ExempleSiContraExemple.
