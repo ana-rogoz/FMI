@@ -1,0 +1,68 @@
+version: '2.1'
+
+services:
+    rt1:
+        image: baseimage:latest
+        volumes:
+            - .:/elocal
+        tty: true
+        networks:
+            - dmz
+            - net
+    rt2:
+        image: baseimage:latest
+        volumes:
+            - .:/elocal
+        tty: true
+        networks:
+            - dmz
+    rt3:
+        image: baseimage:latest
+        volumes:
+            - .:/elocal
+        tty: true
+        networks:
+            - dmz
+    rt4:
+        image: baseimage:latest
+        volumes:
+            - .:/elocal
+        tty: true
+        networks:
+            - dmz
+    ab1:
+        image: baseimage:latest
+        volumes:
+            - .:/elocal
+        tty: true
+        networks:
+            - net
+    ab2:
+        image: baseimage:latest
+        volumes:
+            - .:/elocal
+        tty: true
+        networks:
+            - net
+    ab3:
+        image: baseimage:latest
+        volumes:
+            - .:/elocal
+        tty: true
+        networks:
+            - net
+
+networks:
+    dmz:
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.111.111.0/16 
+                  gateway: 172.111.111.1
+    net:
+        ipam:
+            driver: default
+            config:
+                - subnet: 198.13.13.0/28
+                  gateway: 198.13.13.1
+
