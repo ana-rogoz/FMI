@@ -1,0 +1,6 @@
+Attaching to tema1_rt4_1
+[36mrt4_1  |[0m PING rt3 (1.2.0.2) 56(84) bytes of data.
+[36mrt4_1  |[0m 
+[36mrt4_1  |[0m --- rt3 ping statistics ---
+[36mrt4_1  |[0m 1 packets transmitted, 0 received, 100% packet loss, time 0ms
+[36mrt4_1  |[0m 
