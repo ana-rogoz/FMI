@@ -1,0 +1,142 @@
+@font-face{
+	font-family: eb-garamond;
+	src: url(eb-garamond/EBGaramond-Regular.ttf) format('truetype');
+}
+
+body {
+	background-color: #F1F8E9;
+	font-family: eb-garamond;
+}
+
+header {
+	color: #558b2f;
+	text-shadow: 0 0 5px #7CB342;
+	padding-top: 10vh;
+	font-size: 9em;
+	text-align: center;
+	font-weight: bold;
+}
+
+/* Inceput buton sign out*/
+#ButonSignOut {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	background: transparent;
+	border: 0px transparent;
+	color: #558b2f;
+	font-size: 1.5em;
+	font-weight: bold;
+	font-family: eb-garamond;
+}
+/* Sfarsit buton sign out. */
+
+/* Inceput lista anunturi. */
+#Lista {
+	position: absolute;
+	top: 35%;
+	width: 50%;
+	height: 40vh;
+	overflow-y: scroll;
+	left: 25vw;
+	color: #36802d;
+	margin-bottom: 100px;	
+}
+
+#Lista div {
+	text-align: center;
+	font-size: 1.5em;
+	border: 3px solid #36802d;
+    border-radius: 15px;
+    display: block;
+}
+
+#Lista p {
+	text-align: right;
+	font-size: 1.2em;
+	bottom: 2vh;
+	display: block;	
+	position: relative;
+}
+/* Sfarsit lista anunturi. */
+
+/* Inceput casuta anunt nou. */
+#MesajNou {
+	display: block;
+	width: 25vw;
+	height: 50vh;
+	float: right;
+}
+
+textarea {
+	float: right;
+	margin-right: 2vw;
+	margin-top: 4vh;
+	width: 20vw;
+	height: 40vh;
+	font-family: arial;	
+	font-size: 1.5em;
+	color:  #4c8c4a;
+	font-weight: bold;
+}
+
+#MesajNou > input {
+	margin-right: 2vw;	
+	margin-top: 1vh;
+	float: right;
+	width: 10vw;
+	height: 4vh;
+	background-color: #4c8c4a;
+	color: #F1F8E9;
+	font-weight: bold;
+}
+/* Sfarsit casuta anunt nou. */
+
+/* Inceput meniu utilizator */
+table {
+	position: absolute;
+	width: 10vw;
+	height: 60vh;
+	background-color: #558b2f;
+	opacity: 0.9;
+	z-index: 1;
+	top:0px;
+	left: 0px;
+	text-align: center;
+	color: white;
+	font-weight: bold;
+	border-radius: 5px;
+}
+
+td > input {
+	background: transparent;
+	border: 0px transparent;
+	color: white;
+	font-size: 1.2em;
+	font-weight: bold;
+	font-family: eb-garamond;
+}
+
+th {
+	font-size: 2.3em;
+	font-weight: bold;
+}
+/* Sfarsit meniu utilizator. */
+
+/* Inceput copyright. */
+footer {
+	background-color: #558b2f;
+	opacity: 0.8;
+	z-index: 1;
+	width: 50%;
+	height: 20vh;
+	position: absolute;
+	bottom: 0px;
+	left: 25%;
+	text-align: center;
+	font-size: 1.1em;
+	font-weight: bold;
+	color: #ffffff;
+	border-radius: 25px;
+}
+/* Sfarsit copyright. */

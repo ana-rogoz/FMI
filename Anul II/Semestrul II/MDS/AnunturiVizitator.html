@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	
+	<head>
+		<link rel="stylesheet" type="text/css" href="styleAnunturiVizitator.css">
+		<script src="dataAnunturiVizitator.js"></script>
+		<meta charset="UTF-8">
+		<meta name="keywords" content="targ, cariere, fmi, unibuc, proiect, cllaire, github">
+		<meta name="description" content="Site targ craiere">
+		<meta name="author" content="Ana-Cristina Rogoz">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title> Cariere </title>
+	</head>
+
+	<body>
+		<input id="ButonLogin" type="button" value="Login"> 
+		
+		<header> Anunturi </header> 
+		
+		<script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
+		<script>
+		  var config = {
+		    apiKey: "AIzaSyAS5UYX4RkfpH5rHpQHvzZ1q_2ZQOVZ-AE",
+		    authDomain: "cariere-6d468.firebaseapp.com",
+		    databaseURL: "https://cariere-6d468.firebaseio.com",
+		    projectId: "cariere-6d468",
+		    storageBucket: "cariere-6d468.appspot.com",
+		    messagingSenderId: "757550022548"
+		  };
+		  firebase.initializeApp(config);
+		</script>
+
+		<div id="Meniu"> 
+			<table>
+				<tr> <th> Meniu </th> </tr>
+				<tr> <td> <input id="ButonAnunturiVizitator" type="button" value="Anunturi"> </td> </tr>
+				<tr> <td> <input id="ButonHartaFacultate" type="button" value="Harta facultate"> </td> </tr>
+				<tr> <td> <input id="ButonProgramPrezentari" type="button" value="Program prezentari" </td> </tr>
+				<tr> <td> <input id="ButonProgramWorkshopuri" type="button" value="Program workshopuri" </td> </tr>
+				<tr> <td> <input id="ButonContact" type="button" value="Contact" </td></tr>
+			</table>
+		</div>
+
+		<section id="Lista">
+		</section>	
+		
+		<footer>
+			<br>
+			<p> AMA © 2018 </p>
+			<p> Universitatea din Bucuresti </p>
+			<p> Facultatea de Matematica si Informatica </p>	 
+		</footer>
+
+	</body>
+
+</html>

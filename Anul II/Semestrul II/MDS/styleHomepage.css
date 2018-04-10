@@ -1,0 +1,85 @@
+@font-face{
+	font-family: eb-garamond;
+	src: url(eb-garamond/EBGaramond-Regular.ttf) format('truetype');
+}
+
+body {
+	background-color: #F1F8E9;
+	font-family: eb-garamond;
+}
+
+header {
+	color: #558b2f;
+	text-shadow: 0 0 5px #7CB342;
+	padding-top: 10vh;
+	font-size: 9em;
+	text-align: center;
+	font-weight: bold;
+}
+
+#ContNou {
+	width: 60%;
+	height: 30vh;
+	border: 3px solid #36802d;
+	border-radius: 25px;
+	text-align: center;
+	font-size: 2em;
+	color: #36802d;
+	position: absolute;
+  	top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+div > input {
+	width: 10vw;
+	height: 4vh;
+	background-color: #4c8c4a;
+	color: #F1F8E9;
+	font-weight: bold;
+}
+
+table {
+	position: absolute;
+	width: 10vw;
+	height: 60vh;
+	background-color: #558b2f;
+	opacity: 0.9;
+	z-index: 1;
+	top:0px;
+	left: 0px;
+	text-align: center;
+	color: white;
+	font-weight: bold;
+	border-radius: 5px;
+}
+
+td > input {
+	background: transparent;
+	border: 0px transparent;
+	color: white;
+	font-size: 1.2em;
+	font-weight: bold;
+	font-family: eb-garamond;
+}
+
+th {
+	font-size: 2.3em;
+	font-weight: bold;
+}
+
+footer {
+	background-color: #558b2f;
+	opacity: 0.8;
+	z-index: 1;
+	width: 50%;
+	height: 20vh;
+	position: absolute;
+	bottom: 0px;
+	left: 25%;
+	text-align: center;
+	font-size: 1.1em;
+	font-weight: bold;
+	color: #ffffff;
+	border-radius: 25px;
+}
