@@ -17,7 +17,7 @@ function colecteazaAnunturi() {
 	var messagesCount = 0;
 	firebase.database().ref('messagesCount').once("value").then(function(snapshot) {
 		messagesCount = snapshot.child("count").val();
-		for (var index = 1; index <= messagesCount; index ++) {
+		for (var index = messagesCount; index >= 1 ; index --) {
 			var author = "";
 			var date = "";
 			var message = "";
