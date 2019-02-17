@@ -1,0 +1,307 @@
+<html>
+<head>
+<title>Laboratorul 8: Monade</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <link rel="stylesheet" type="text/css" href="https://www.dropbox.com/s/48bx1xvl42hr5gp/progdecl.css?dl=1">
+  <script type="text/javascript" src="https://www.dropbox.com/s/hk9x49z7vmznfp9/progdecl.js?dl=1">
+  </script>
+  <style>
+  .exercise {background-color: #f0f0f0;padding: 1pt; padding-left: 10pt;}
+  </style>
+</head>
+
+<body>
+<h1><strong>
+You Could Have Invented Monads!<br>(And Maybe You Already Have.)</strong>
+<br>
+by Dan Piponi
+</h1>
+
+<p>Source: http://blog.sigfpe.com/2006/08/you-could-have-invented-monads-and.html <p>
+
+<div class="post-header-line-1"></div>
+<div class="post-body entry-content">
+<p>If you hadn't guessed, this is about monads as they appear in
+pure functional programming languages like Haskell. They are closely
+related to the monads of category theory, but are not exactly the same
+because Haskell doesn't enforce the identities satisfied by categorical
+monads.</p>
+
+<p>Writing introductions to monads seems to have developed into an industry. There's a <a href="http://www.haskell.org/tutorial/monads.html" target="_blank">gentle</a> Introduction, a <a href="http://lambda-the-ultimate.org/node/1183" target="_blank">Haskell Programmer's</a>
+ introduction with the advice "Don't Panic", an introduction for the
+"Working Haskell Programmer" and countless others that introduce monads
+as everything from a type of functor to a type of <a href="http://chrisdone.com/posts/monads-are-burritos" target="_blank">burrito</a> [http://chrisdone.com/posts/monads-are-burritos].</p>
+
+<p>But all of these introduce monads as something esoteric in need of
+explanation. But what I want to argue is that they aren't esoteric at
+all. In fact, faced with various problems in functional programming you
+would have been led, inexorably, to certain solutions, all of which are
+examples of monads. In fact, I hope to get you to invent them now if you
+ haven't already. It's then a small step to notice that all of these
+solutions are in fact the same solution in disguise. And after reading
+this, you might be in a better position to understand other documents on
+ monads because you'll recognise everything you see as something you've
+already invented.</p>
+
+<p>Many of the problems that monads try to
+solve are related to the issue of side effects. So we'll start with
+them. (Note that monads let you do more than handle side-effects, in
+particular many types of container object can be viewed as monads. Some
+of the introductions to monads find it hard to reconcile these two
+different uses of monads and concentrate on just one or the other.)</p>
+
+<h2>Side Effects: Debugging Pure Functions</h2>
+<p>In an imperative programming language such as C++, functions behave
+nothing like the functions of mathematics. For example, suppose we have a
+ C++ function that takes a single floating point argument and returns a
+floating point result. Superficially it might seem a little like a
+mathematical function mapping reals to reals, but a C++ function can do
+more than just return a number that depends on its arguments. It can
+read and write the values of global variables as well as writing output
+to the screen and receiving input from the user. In a pure functional
+language, however, a function can only read what is supplied to it in
+its arguments and the only way it can have an effect on the world is
+through the values it returns.</p>
+
+<p>So consider this problem in a
+pure functional language: we have functions f and g that both map floats
+ to floats, but we'd like to modify these functions to also output
+strings for debugging purposes. In Haskell, f and g might have types
+given by</p>
+
+<pre>f,g :: Float -&gt; Float</pre>
+
+<p>How can we
+modify the types of f and g to admit side effects? Well there really
+isn't any choice at all. If we'd like f' and g' to produce strings as
+well as floating point numbers as output, then the only possible way is
+for these strings to be returned alongside the floating point numbers.
+In other words, we need f' and g' to be of type</p>
+
+<pre>f',g' :: Float -&gt; (Float,String)</pre>
+
+<p>We can draw this diagrammatically as</p>
+
+
+<pre>
+    x
+    |
+  +&ndash;&ndash;&ndash;+
+  | f'|
+  +&ndash;&ndash;&ndash;+
+   |  \
+   |   |
+  f x  "f was called."
+</pre>
+
+<p>We can think of these as 'debuggable' functions.</p>
+
+<p>But suppose now that we'd like to debug the composition of two such functions. We could simply compose our original functions, f and g, to form <tt>f . g</tt>. But our debuggable functions aren't quite so straightforward to deal with. We'd like the strings returned by f' and g' to be concatenated into one longer debugging string (the one from f' after the one from g'). But we can't simply compose f' and g' because the return value of g' is not of the same type as the argument to f'. We could write code in a style like this:</p>
+
+<pre>let (y,s) = g' x<br>    (z,t) = f' y in (z,s++t)</pre>
+
+<p>Here's how it looks diagramatically:</p>
+<br><br><br>
+
+<pre>
+     x<br>     |<br>   +&ndash;&ndash;&ndash;+<br>   | g'|<br>   +&ndash;&ndash;&ndash;+<br>    |   \   <br>  +&ndash;&ndash;&ndash;+  | "g was called."<br>  | f'|  |<br>  +&ndash;&ndash;&ndash;+  |<br>   | \   |<br>   |  \  |<br>   |  +&ndash;&ndash;&ndash;&ndash;+<br>   |  | ++ |<br>   |  +&ndash;&ndash;&ndash;&ndash;+<br>   |     |<br>f (g x) "g was called.f was called."</pre>
+
+<p>This is hard work every time we need to compose two functions and if we had to do implement this kind of plumbing all the way through our code it would be a pain. What we need is to define a higher order function to perform this plumbing for us. As the problem is that the output from g' can't simply be plugged into the input to f', we need to 'upgrade' f'. So we introduce a function, 'bind', to do this. In other words we'd like</p>
+<pre>bind f' :: (Float,String) -&gt; (Float,String)</pre>
+
+<p>which implies that</p>
+<pre>bind :: (Float -&gt; (Float,String)) -&gt; ((Float,String) -&gt; (Float,String))</pre>
+<p>bind must serve two purposes: it must (1) apply f' to the correct part of g' x and (2) concatenate the string returned by g' with the string returned by f'.</p>
+
+<div class="exercise">
+  <h3>Exercise One</h3>
+<p>Write the function bind.</p>
+</div>
+<!--<br><b>Solution</b><br><pre>bind f' (gx,gs) = let (fx,fs) = f' gx in (fx,gs++fs)</pre><br> -->
+<p>Given a pair of debuggable functions, f' and g', we can now compose them together to make a new debuggable function <tt>bind f' . g'</tt>. Write this composition as <tt>f'*g'</tt>. Even though the output of g' is incompatible with the input of f' we still have a nice easy way to concatenate their operations. And this suggests another question: is there an 'identity' debuggable function. The ordinary identity has these properties: <tt>f . id = f</tt> and <tt>id . f = f</tt>. So we're looking for a debuggable function, call it unit, such that <tt>unit * f = f * unit = f</tt>. Obviously we'd expect it to produce the empty debugging string and otherwise act a bit like the identity.</p>
+
+<div class="exercise">
+<h3>Exercise Two</h3>
+<p>Define unit.</p>
+</div>
+<!--<br><b>Solution</b><br><pre>unit x = (x,"")</pre><br>-->
+<p>The unit allows us to 'lift' any function into a debuggable one. In fact, define</p>
+<pre>lift f x = (f x,"")</pre>
+<p>or more simply, <tt>lift f = unit . f</tt>. The lifted version does much the same as the original function and, quite reasonably, it produces the empty string as a side effect.</p>
+
+<div class="exercise">
+<h3>Exercise Three</h3>
+<p>Show that <tt>lift f * lift g = lift (f.g)</tt></p>
+</div>
+
+<p>In summary: the functions, bind and unit, allow us to compose debuggable functions in a straightforward way, and compose ordinary functions with debuggable functions in a natural way.</p>
+
+<p>Believe it or not, by carrying out those two exercises you have defined your first monad. At this point it's probably not clear which of the structures we've looked at is the monad itself, or what other monads might look like. But rather than defining monads now I'll get you to do some more easy exercises that will introduce other monads so that you'll see for yourself that there is a common structure deserving of its own name. I'm also pretty confident that most people, faced with the original problem, would eventually have come up with the function bind as a way to glue their debuggable functions together. So I'm sure that you could have invented this monad, even if you didn't realise it was a monad.</p>
+
+<h2>A Container: Multivalued Functions</h2>
+<p>Consider the the functions sqrt and cbrt that compute the square root and cube root, respectively, of a real number. These are straightforward functions of type <tt>Float -&gt; Float</tt> (although sqrt will thrown an exception for negative arguments, something we'll ignore).</p><br><p>Now consider a version of these functions that works with complex numbers. Every complex number, besides zero, has two square roots. Similarly, every non-zero complex number has three cube roots. So we'd like sqrt' and cbrt' to return lists of values. In other words, we'd like</p>
+<pre>sqrt',cbrt' :: Complex Float -&gt; [Complex Float]</pre>
+
+<p>We'll call these 'multivalued' functions.</p>
+
+<p>Suppose we want to find the sixth root of a real number. We can just concatenate the cube root and square root functions. In other words we can define sixthroot x = sqrt (cbrt x).</p>
+
+<p>But how do we define a function that finds all six sixth roots of a complex number using sqrt' and cbrt'. We can't simply concatenate these functions. What we'd like is to first compute the cube roots of a number, then find the square roots of all of these numbers in turn, combining together the results into one long list. What we need is a function, called bind say, to compose these functions, with declaration</p>
+
+<pre>bind :: (Complex Double -&gt; [Complex Double]) -&gt; ([Complex Double] -&gt; [Complex Double])</pre>
+
+<p>Here's a diagram showing how the whole process looks. We only want to write cbrt' once but still have it applied to both sqrt' values. <pre>        64<br>        |<br>     +&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;+<br>     + sqrt'+<br>     +&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;+<br>   +8 /    \ -8<br> +&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;+  +&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;+<br> | cbrt'|  | cbrt'|<br> +&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;+  +&ndash;&ndash;&ndash;&ndash;&ndash;&ndash;+<br>  | | |      | | |<br>  2 . .     -2 . .</pre>
+
+<div class="exercise">
+<h3>Exercise Four</h3>
+<p>Write an implementation of bind.</p>
+  <!--<br><b>Solution</b><br><p></p><pre>bind f x = concat (map f x)</pre><p></p><br>-->
+</div>
+
+<p>How do we write the identity function in multivalued form? The identity returns one argument, so a multivalued version should return a list of length one. Call this function unit.</p>
+
+<div class="exercise">
+<h3>Exercise Five</h3>
+<p>Define unit.</p>
+  <!--<br><b>Solution</b><br><pre>unit x = [x]</pre><br>-->
+</div>
+
+<p>Again, define <tt>f * g = bind f . g</tt> and <tt>lift f = unit . f</tt>. lift does exactly what you might expect. It turns an ordinary function into a multivalued one in the obvious way.</p>
+
+<div class="exercise">
+<h3>Exercise Six</h3>
+<p>Show that <tt>f * unit = unit * f = f</tt> and <tt>lift f * lift g = lift (f.g)</tt></p>
+</div>
+
+<p>Again, given the original problem, we are led inexorably towards this bind function.</p>
+
+<p>If you managed those exercises then you've defined your second monad. You may be beginning to see a pattern develop. It's curious that these entirely different looking problems have led to similar looking constructions.</p>
+
+<h2>A more complex side effect: Random Numbers</h2>
+
+<p>The Haskell random function looks like this</p>
+<pre>random :: StdGen -> (a,StdGen)</pre>
+
+<p>The idea is that in order to generate a random number you need a seed, and after you've generated the number you need to update the seed to a new value. In a non-pure language the seed can be a global variable so the user doesn't need to deal with it explicitly. But in a pure language the seed needs to be passed in and out explicitly - and that's what the signature of random describes. Note that this is similar to the debugging case above because we are returning extra data by using a pair. But this time we're passing in extra data too.</p>
+
+<p>So a function that is conceptually a randomised function <tt>a -> b</tt> can be written as a function <tt>a -> StdGen -&gt; (b,StdGen)</tt> where StdGen is the type of the seed.</p>
+
+<p>We now must work out how to compose two randomised functions, f and g. The first element of the pair that f returns needs to be passed in as an input to g. But the seed returned from the g also needs to be passed in to f. Meanwhile the 'real' return value of g needs to be passed in as the first argument of f. So we can give this signature for bind:</p>
+<pre>bind :: (a -> StdGen -> (b,StdGen)) -> (StdGen -> (a,StdGen)) -> (StdGen -> (b,StdGen))</pre>
+
+<div class="exercise">
+<h3>Exercise Seven</h3>
+<p>Implement bind</p>
+  <!--<br><b>Solution</b><br><pre>bind f x seed = let (x',seed') = x seed in f x' seed'</pre><br>-->
+</div>
+
+<p>Now we need to find the 'identity' randomised function. This needs to be of type
+<pre>unit :: a -> (StdGen -> (a,StdGen))</pre>
+and should leave the seed unmodified.</p>
+
+<div class="exercise">
+<h3>Exercise Eight</h3>
+<p>Implement unit.</p>
+  <!--<br><b>Solution</b><br><pre>unit x g = (x,g)</pre> or just <pre>unit = (,)</pre><br>-->
+</div>
+
+<p>Yet again, define <tt>f * g = bind f . g</tt> and <tt>lift f = unit . f</tt>. lift does exactly what you might expect &mdash; it turns an ordinary function into a randomised one that leaves the seed unchanged.</p>
+
+<div class="exercise">
+<h3>Exercise Nine</h3>
+<p>Show that <tt>f * unit = unit * f = f</tt> and <tt>lift f * lift g = lift (f.g)</tt></p>
+</div>
+
+<h2>Monads</h2>
+
+<p>It's now time to step back and discern the common structure.</p>
+
+<p>Define</p>
+<pre>type Debuggable a = (a,String)<br>type Multivalued a = [a]<br>type Randomised a = StdGen -> (a,StdGen)</pre>
+
+<p>Use the variable m to represent Debuggable, Multivalued or Randomised. In each case we are faced with the same problem. We're given a function <tt>a -&gt; m b</tt> but we need to somehow apply this function to an object of type m a instead of one of type a. In each case we do so by defining a function called bind of type <tt>(a -> m b) -&gt; (m a -> m b)</tt> and introducing a kind of identity function <tt>unit :: a -> m a</tt>. In addition, we found that these identities held: <tt>f * unit = unit * f = f</tt> and <tt>lift f * lift g = lift (f.g)</tt>, where '*' and lift where defined in terms of unit and bind.</p>
+
+<p>So now I can reveal what a monad is. The triple of objects <tt>(m,unit,bind)</tt> is the monad, and to be a monad they must satisfy a bunch of laws such as the ones you've been proving. And I think that in each of the three cases you'd have eventually come up with a function like bind, even if you might not have immediately noticed that all three cases shared a common structure.</p>
+
+<p>So now I need to make some contact with the usual definition of Haskell monads. The first thing is that I've flipped the definition of bind and written it as the word 'bind' whereas it's normally written as the operator &gt;&gt;=. So bind f x is normally written as <tt>x &gt;&gt;= f</tt>. Secondly, unit is usually called return. And thirdly, in order to overload the names &gt;&gt;= and return, we need to make use of type classes. In Haskell, Debuggable is the Writer monad, Multivalued is the List monad and Randomised is the State monad. If you check the definitions of these
+  <ul>
+    <li><a href="http://learnyouahaskell.com/for-a-few-monads-more#writer" target="_blank">Control.Monad.Writer</a> </li>
+    <li><a href="http://learnyouahaskell.com/a-fistful-of-monads#the-list-monad" target="_blank">Control.Monad.List</a> </li>
+    <li><a href="http://learnyouahaskell.com/for-a-few-monads-more#state" target="_blank">Control.Monad.State</a></li>
+  </ul>
+you'll see that apart from some syntactic fluff they are essentially the definitions you wrote for the exercises above. Debugging used the Writer monad, the multivalued functions used the List monad and the random number generator used the State monad. You could have invented monads!</p>
+
+<div class="exercise">
+<h3>Exercise Ten</h3>
+<p>Create abstractions for the types defined above and make them instances of the <tt>Monad</tt> type class. <b>Note:</b> To do that, you firs need to make them instances of the <tt>Functor</tt> and <tt>Applicative</tt> type classes, too.
+</p>
+</div>
+
+<h2>Monad Syntax</h2>
+
+<p>I don't want to spend too long on this (and you can skip this section) because there are plenty of excellent introductions out there.</p>
+
+  <p>You've already seen how the bind function can provide a nice way to plumb functions together to save you writing quite a bit of ugly code. Haskell goes one step further, you don't even have to explicitly use the bind function, you can ask Haskell to insert it into your code automatically.</p>
+
+  <p>Let's go back to the original debugging example except we'll now use the official Haskell type classes. Where we previously used a pair like <tt>(a,s)</tt> we now use <tt>Writer (a,s)</tt> of type <tt>Writer Char</tt>. And to get the pair back out of one of these objects we use the function runWriter. Suppose we want to increment, double and then decrement 7, at each stage logging what we have done. We can write</p>
+  <pre>return 7 &gt;&gt;= (\x -&gt; Writer (x+1,"inc."))<br>    &gt;&gt;= (\x -&gt; Writer (2*x,"double."))<br>    &gt;&gt;= (\x -&gt; Writer (x-1,"dec."))</pre>
+
+  <p>If we apply runWriter to this we should get <tt>(15,"inc.double.dec.")</tt>. But it's still pretty ugly. Instead we can use Haskell do syntax. The idea is that
+    <pre>do x &lt;- y<br>    more code</pre>
+    is automatically rewritten by the compiler to
+    <pre>y &gt;&gt;= (\x -&gt; do<br>                more code).</pre>
+
+  <p>Similarly,
+    <pre>do<br>    let x = y<br>    more code</pre>
+    is rewritten as
+    <pre>(\x -&gt; do<br>        more code) y</pre>
+    and<
+    <pre>do<br>    expression</pre>
+    is just left as the expression.</p>
+
+  <p>We can now rewrite the code above as:
+    <pre>do<br>    let x = 7<br>    y &lt;- Writer (x+1,"inc\n")<br>    z &lt;- Writer (2*y,"double\n")<br>    Writer (z-1,"dec\n")</pre>
+
+  <p>The notation is very suggestive. When we write y &lt;- ... it's as if we can pretend that the expression on the right hand side is just x+1 and that the side-effect just looks after itself.</p>
+
+  <p>Another example. Write our sixth root example in the cumbersome form:</p>
+  <pre>return 64 &gt;&gt;= (\x -&gt; sqrt' x) &gt;&gt;= (\y -&gt; cbrt' y)</pre>
+
+  <p>We can now rewrite this as the readable</p>
+  <pre>do<br>    let x = 64<br>    y &lt;- sqrt' x<br>    z &lt;- cbrt' y<br>    return z</pre>
+
+  <p>We're able to write what looks like ordinary non-multivalued code and the implicit bind functions that Haskell inserts automatically make it multivalued.</p>
+
+  <p>Inventing this syntax was a work of genius. Maybe you could have invented it, but I'm sure I wouldn't have. But this is extra stuff is really just syntactic sugar on top of monads. I still claim that you could have invented the underlying monads.</p>
+
+<h2>Input/Output</h2>
+
+  <p>There's now one last thing we have to look at before you're fully qualified in monadicity. Interaction with the outside world. Up until now everything I have said might apply to any pure functional language. But now consider lazy pure functional languages. In such a language you have no idea what order things will be evaluated in. So if you have a function to print the message "Input a number" and another function to input the number, you might not be able to guarantee that the message is printed before the input is requested! Go back to the randomised function example. Notice how the random seed gets threaded through your functions so that it can be used each time random is called. There is a kind of ordering going on. Suppose we have x <tt>&gt;&gt;= f &gt;&gt;= g</tt>. Because g uses the seed returned by f, we know for sure that f will generate its random number before g. This shows that in principle, monads can be used to order computations.</p>
+
+  <p>Now consider the implementation of random in the compiler. It's typically a C or assembler routine linked into the final Haskell executable. If this routine were modified to perform I/O we could guarantee that the I/O in f was performed before that in g. This is exactly how I/O works in Haskell, we perform all of the I/O in a monad. In this case, a function that conceptually is of type <tt>a -&gt; b</tt>, but also has a side-effect in the real world, is actually of type <tt>a -&gt; IO b</tt>. Type <tt>IO</tt> type is a black box, we don't need to know what's in it. (Maybe it works just like the random example, maybe not.) We just need to know that <tt>x &gt;&gt;= f &gt;&gt;= g</tt> performs the I/O in f before that in g.</p>
+
+<h2>Category Theory</h2>
+
+  <p>One last thing. Monads were originally developed in the context of category theory. I'll leave the connection for another day.</p>
+
+  <p>Oh...and I ought to mention...I'm still not convinced that I could have invented <a href="http://www-math.mit.edu/%7Etchow/spectral.pdf" target="_blank">Spectral Sequences</a>. But I'm still working on it thanks to Tim Chow.
+
+<div class="exercise">
+<h3>Exercise Eleven: A complete example using random numbers</h3>
+<!--
+  <br><br>Firstly, here's the code corresponding to the definitions above:<br><pre><br>import Random<br><br>bind :: (a -&gt; StdGen -&gt; (b,StdGen)) -&gt; (StdGen -&gt; (a,StdGen)) -&gt; (StdGen -&gt; (b,StdGen))<br>bind f x seed = let (x',seed') = x seed in f x' seed'<br>unit x g = (x,g)<br>lift f = unit . f<br></pre><br>
+-->
+  <p> So here's what we're going to do: we want to construct a 2 (decimal) digit random number in three steps. Starting with zero we:
+    <ul>
+      <li> add a random integer in the range [0,9]</li>
+      <li> multiply it by 10</li>
+      <li> add another random integer in the range [0,9]</li>
+    </ul>
+
+  <p> Conceptually this operation is a composition something like this <tt>addDigit . (*10) . addDigit</tt>. But we know we need to thread the random seed through this code.
+</div>
+    <!--Firstly, look at the actual definition of addDigit:<br><pre><br>addDigit n g = let (a,g') = random g in (n + a `mod` 10,g')<br></pre><br>This returns a pair consisting of n+random digit and the new seed. Note how it also takes that extra seed as argument. One could argue that 'conceptually' this function is <tt>addDigit n = let a = random in n + a `mod` 10</tt> and in a suitable strict and impure language that might be considered valid code.<br><br>Now consider the operation to multiply by 10. This is an ordinary function that we can 'upgrade' using lift. So we get<br><pre><br>shift = lift (*10)<br></pre><br>And now is the crucial bit. We can't simply compose but must instead use bind to convert our functions into a form that can be composed. So that conceptual <tt>addDigit . (*10) . addDigit</tt> becomes<br><pre><br>test :: Integer -&gt; StdGen -&gt;  (Integer,StdGen)<br>test = bind addDigit . bind shift . addDigit<br></pre><br>Now we create a seed using my favourite number and run the code:<br><pre><br>g = mkStdGen 666<br>main = print $ test 0 g<br></pre><br>Note that I've chosen not to use the Monad type class so that nothing is hidden from you and everything is explicit.<br><br>Update: Thanks for the comments. I've now made lots of fixes and added an appendix with a random number example. Most of the code fragments have now been copied back from the final text into real code so there should only be a small number of typos left. Apologies for any confusion caused!<br><br>For a slightly different take on monads I've written a little on <a href="http://sigfpe.blogspot.com/2006/06/monads-kleisli-arrows-comonads-and.html">Kleisli arrows</a>. And if you're interesting in layering monads to achieve more functionality you can try <a href="http://sigfpe.blogspot.com/2006/05/grok-haskell-monad-transformers.html">this</a>.<br><hr><br><iframe src="http://rcm.amazon.com/e/cm?t=sigfpe-20&amp;o=1&amp;p=8&amp;l=as1&amp;asins=0596514980&amp;fc1=000000&amp;IS2=1&amp;lt1=_blank&amp;m=amazon&amp;lc1=0000FF&amp;bc1=000000&amp;bg1=FFFFFF&amp;f=ifr" style="width:120px;height:240px;" scrolling="no" marginwidth="0" marginheight="0" frameborder="0"></iframe>-->
+
+    <address>Source: <a href="http://blog.sigfpe.com/2006/08/you-could-have-invented-monads-and.html">A Neighborhood of Infinity &mdash; You Could Have Invented Monads! (And Maybe You Already Have.)</a></address>
+
+</body></html>
