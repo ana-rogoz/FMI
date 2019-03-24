@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1552339121 source:/home/ana/Documents/UniBuc/Anul III/Semestrul II/Tehnici de Compilare/TranslatorStivaLambda/main.cpp
+	<stdio.h>
+	<string>
+	<set>
+	<vector>
+	<string.h>
+	<queue>
+
