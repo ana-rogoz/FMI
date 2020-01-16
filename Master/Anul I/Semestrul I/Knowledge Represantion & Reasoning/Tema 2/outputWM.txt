@@ -1,0 +1,3 @@
+The initial working memory is empty.
+The working memory after asking questions is the following: [temperature,sick,musclepain,cough]
+The final working memory is the following: [pneumonia,infection,flu,fever,temperature,sick,musclepain,cough]

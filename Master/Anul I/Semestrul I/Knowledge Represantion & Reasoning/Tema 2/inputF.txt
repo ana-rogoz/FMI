@@ -1,0 +1,1 @@
+[[pneumonia, n(cough),n(infection)], [fever, n(temperature)], [infection, n(sick),n(fever)]].
