@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1555504071 source:/home/ana/Documents/UniBuc/Anul III/Semestrul II/Tehnici de Compilare/AlgoritmRecursivDescendentLL1/main.cpp
+	<cstdio>
+	<vector>
+	<string>
+	<string.h>
+	<map>
+	<set>
+	<algorithm>
+	<iostream>
+

@@ -1,0 +1,13 @@
+4
+S E R T
+7
+$ + * ( ) n l
+S
+S -> E$
+E -> TR
+R -> +TR
+R -> *TR
+R -> l
+T -> (E)
+T -> n
+
