@@ -1,0 +1,51 @@
+inputData = 
+labelData = 
+labelDataMatrix = zeros(10, 24600);
+
+for (i = 1; i <= 24600; i++) {
+	if(labelData(i) == 0)
+		labelData(;i) = [1 0 0 0 0 0 0 0 0 0]; 
+	if(labelData(i) == 1)
+		labelData(;i) = [0 1 0 0 0 0 0 0 0 0];
+	if(labelData(i) == 2)
+		labelData(;i) = [0 0 1 0 0 0 0 0 0 0];
+	if(labelData(i) == 3)
+		labelData(;i) = [0 0 0 1 0 0 0 0 0 0];
+	if(labelData(i) == 4)
+		labelData(;i) = [0 0 0 0 1 0 0 0 0 0];
+	if(labelData(i) == 5)
+		labelData(;i) = [0 0 0 0 0 1 0 0 0 0];
+	if(labelData(i) == 6)
+		labelData(;i) = [0 0 0 0 0 0 1 0 0 0];
+	if(labelData(i) == 7)
+		labelData(;i) = [0 0 0 0 0 0 0 1 0 0];
+	if(labelData(i) == 8)
+		labelData(;i) = [0 0 0 0 0 0 0 0 1 0];
+	if(labelData(i) == 9)
+		labelData(;i) = [0 0 0 0 0 0 0 0 0 1];
+}
+
+
+net = patternet(64, 64);
+net.layers{1:2}.transferFcn = 'purelin';
+net.layers{3}.transferFcn = 'softmax';
+net = configure(net, inputData, labelDataMatrix);
+net.trainParams.learningRate 
+
+net = train(net, inputData, labelDataMatrix);
+
+inputTest = 
+labelTest = sim(net, inputTest);
+clase = zeros(24600, 2);
+
+for (i = 1; i <= 24600; i++) {
+	max = max(labelTest(:,i);	
+	pozMax = find(labelTest(:,i) == max);
+	clase(1,i) = i;
+	clase(2,i) = pozMax - 1;
+}
+
+
+
+
+
