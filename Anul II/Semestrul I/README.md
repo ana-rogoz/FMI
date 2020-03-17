@@ -1,6 +1,6 @@
-Geometrie computationala - Sorin Stupariu \
-Calculabilitate si complexitate - Victor Mitrana \
+Geometrie computațională - Sorin Stupariu \
+Calculabilitate și complexitate - Victor Mitrana \
 Tehnici avansate de programare - Ruxandra Marinescu \
-Probabilitati si statistica - Cristian Niculescu \
+Probabilități și statistică - Cristian Niculescu \
 Sisteme de operare - Paul Irofti \
-Tehnici Web - Carmen Chirita
+Tehnici Web - Carmen Chiriță
