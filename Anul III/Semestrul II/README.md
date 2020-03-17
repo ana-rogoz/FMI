@@ -1,6 +1,6 @@
-Introducere în Cercetare și Bioinformatică - Andrei Păun \
+Introducere în Cercetare și Bioinformatică - Andrei Păun 
 
-Tehnici de Simulare - Florentina Suter \
+Tehnici de Simulare - Florentina Suter 
 
 Tehnici de Optimizare - Monica Patriche 
 
