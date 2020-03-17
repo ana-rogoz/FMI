@@ -1,6 +1,6 @@
-Arhitectura Sistemelor de Calcul - Gheorghe Stefanescu \
-Algoritmi si Structuri de Date - Rodica Ceterchi \
+Arhitectura Sistemelor de Calcul - Gheorghe Ștefănescu \
+Algoritmi și Structuri de Date - Rodica Ceterchi \
 Programare Procedurala - Bogdan Alexe  \
-Logica si Matematica Computationala - Laurentiu Leustean \
-Algebra - Marius Vladoiu \
-Analiza - Petre Ilias
+Logică Matematică și Computațională - Laurențiu Leuștean \
+Algebră - Marius Vlădoiu \
+Analiză - Petre Iliaș
